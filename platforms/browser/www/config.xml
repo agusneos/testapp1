@@ -6,9 +6,9 @@
     <feature name="Device">
         <param name="browser-package" value="Device" />
     </feature>
-    <name>helloworld</name>
+    <name>Produksi</name>
     <description>
-        Hello World sample application that responds to the deviceready event.
+        Aplikasi Scan Hasil Produksi.
     </description>
     <author email="support@phonegap.com" href="http://phonegap.com">
         PhoneGap Team

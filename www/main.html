@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <title>MAIN</title>  
+    <link rel="stylesheet" type="text/css" href="css/themes/metro/easyui.css">  
+    <link rel="stylesheet" type="text/css" href="css/themes/mobile.css">  
+    <link rel="stylesheet" type="text/css" href="css/themes/icon.css">  
+    <script type="text/javascript" src="js/jquery.min.js"></script>  
+    <script type="text/javascript" src="js/jquery.easyui.min.js"></script> 
+    <script type="text/javascript" src="js/jquery.easyui.mobile.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">
+        app.initialize();
+    </script>
+<body>
+    <div class="easyui-navpanel">
+        <header>
+            <div class="m-toolbar">
+                    <span id="ss" class="m-title">Main Menu</span>
+            </div>
+        </header>
+        <div style="padding:20px 40px">
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-large-picture',iconAlign:'top',size:'large'">
+                Hasil Produksi
+            </a>
+        </div>
+        <div style="padding:20px 40px">
+            <a href="javascript:logout()" class="easyui-linkbutton" data-options="iconCls:'icon-large-shapes',iconAlign:'top',size:'large'" style="margin-left:20px">
+                Logout
+            </a>
+        </div>
+    </div>
+<script>
+    $(function(){
+        var procName    = window.localStorage.getItem("procName");
+        $('#ss').html(procName);
+    });
+    function logout(){
+        window.localStorage.removeItem("procId");
+        window.localStorage.removeItem("procName");
+        window.localStorage.removeItem("oprId");
+        window.localStorage.removeItem("oprName");
+        window.open("index.html");
+    }
+</script>
+</body>	
+</html>

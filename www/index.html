@@ -5,7 +5,7 @@
     <meta name="format-detection" content="telephone=no" />
     <meta name="msapplication-tap-highlight" content="no" />
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
-    <title>LOGIN</title>  
+    <title>MAIN</title>  
     <link rel="stylesheet" type="text/css" href="css/themes/metro/easyui.css">  
     <link rel="stylesheet" type="text/css" href="css/themes/mobile.css">  
     <link rel="stylesheet" type="text/css" href="css/themes/icon.css">  
@@ -22,70 +22,37 @@
     <div class="easyui-navpanel">
         <header>
             <div class="m-toolbar">
-                    <span class="m-title">Login to System</span>
+                    <span id="ss" class="m-title">Main Menu</span>
             </div>
         </header>
-        <div style="margin:20px auto;width:100px;height:100px;border-radius:100px;overflow:hidden">
-            <img src="img/maxi_login.png" style="margin:0;width:100%;height:100%;">
+        <div style="padding:20px 40px">
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-large-picture',iconAlign:'top',size:'large'">
+                Hasil Produksi
+            </a>
         </div>
-        <form id="loginForm" method="post" novalidate onsubmit="return false" style="padding:0 20px">
-            <div style="margin-bottom:10px">
-                <input id="proses" name="proses" class="easyui-combobox" data-options="
-                    url         : 'http://192.168.43.115/api/mobile/proses',
-                    prompt      : 'Proses',
-                    method      : 'post',
-                    mode        : 'remote',
-                    valueField  : 'mob_m_process_id',
-                    textField   : 'mob_m_process_name'"
-                style="width:100%;height:38px">
-            </div>
-            <div>
-                <input id="opr" name="opr" type="number" class="easyui-textbox" data-options="prompt:'ID Operator'" style="width:85%;height:38px">
-                <a id="scan_id" href="javascript:scan_id()" class="easyui-linkbutton easyui-tooltip"  
-                    title="Scan ID." data-options="position:'right'" style="width:14%;height:38px"></a>
-            </div>
-            <div style="text-align:center;margin-top:30px">
-                <a href="javascript:login()" class="easyui-linkbutton" style="width:100%;height:40px"><span style="font-size:16px">Login</span></a>
-            </div>
-        </form>
+        <div style="padding:20px 40px">
+            <a href="javascript:logout()" class="easyui-linkbutton" data-options="iconCls:'icon-large-shapes',iconAlign:'top',size:'large'" style="margin-left:20px">
+                Logout
+            </a>
+        </div>
     </div>
 <script>
-    function scan_id(){
-        cordova.plugins.barcodeScanner.scan(
-            function (result) {
-                $('#opr').textbox('setValue', result.text);
-            },
-            function (error) {
-                alert("Scanning failed: " + error);
-            },
-            {
-                showTorchButton : true,
-                prompt          : "Scan ID Card",
-                formats         : "QR_CODE"
-            }
-        );
-    }
-    function login(){
-        $.post('http://192.168.43.115/api/mobile/login', $('#loginForm').serialize(), function(e) {
-            var data = JSON.parse(e);
-            if(data.success){
-                var procId      = $('#proses').combobox('getValue');
-                var procName    = $('#proses').combobox('getText');
-                var oprId       = data.opr_id;
-                var oprName     = data.opr_name;
-                
-                window.localStorage.setItem("procId", procId);
-                window.localStorage.setItem("procName", procName);
-                window.localStorage.setItem("oprId", oprId);
-                window.localStorage.setItem("oprName", oprName);
-                
-                window.open("main.html");
-            }
-            else{
-                alert(data.reason);
-            }
-            
-        });
+    $(function(){
+        var procName    = window.localStorage.getItem("oprId");
+        if(procName != undefined){
+            $('#ss').html(procName);
+        }
+        else{
+            //window.open("login.html");
+            window.location.replace("login.html");
+        }
+    });
+    function logout(){
+        window.localStorage.removeItem("procId");
+        window.localStorage.removeItem("procName");
+        window.localStorage.removeItem("oprId");
+        window.localStorage.removeItem("oprName");
+        window.open("index.html");
     }
 </script>
 </body>	

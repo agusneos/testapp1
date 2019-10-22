@@ -30,7 +30,7 @@
             </a>
         </div>
         <div style="padding:20px 40px">
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-large-shapes',iconAlign:'top',size:'large'" style="margin-left:20px">
+            <a href="javascript:logout()" class="easyui-linkbutton" data-options="iconCls:'icon-large-shapes',iconAlign:'top',size:'large'" style="margin-left:20px">
                 Logout
             </a>
         </div>
@@ -40,6 +40,13 @@
         var procName    = window.localStorage.getItem("procName");
         $('#ss').html(procName);
     });
+    function logout(){
+        window.localStorage.removeItem("procId");
+        window.localStorage.removeItem("procName");
+        window.localStorage.removeItem("oprId");
+        window.localStorage.removeItem("oprName");
+        window.open("index.html");
+    }
 </script>
 </body>	
 </html>

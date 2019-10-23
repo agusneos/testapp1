@@ -93,9 +93,20 @@
                         }
                         else{
                             $.messager.progress('close');
-                            $.messager.alert('Alert',data.reason,'error',function(){
+                            //$.messager.alert('Alert',data.reason,'error',function(){
                                 $('#opr').textbox('setValue','');
                                 $('#opr').next().find('input').focus();
+                            //});
+                            //alert(data.reason);
+                            $.messager.show({
+                                title:'Alert',
+                                msg:data.reason,
+                                timeout:2,
+                                showType:'show',
+                                style:{
+                                    right:'',
+                                    bottom:''
+                                }
                             });
                         }
                         

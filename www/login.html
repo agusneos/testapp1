@@ -15,9 +15,6 @@
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/codescanner.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
-    <script type="text/javascript">
-        app.initialize();
-    </script>
 <body>
     <div class="easyui-navpanel">
         <header>
@@ -37,10 +34,10 @@
                     mode        : 'remote',
                     valueField  : 'mob_m_process_id',
                     textField   : 'mob_m_process_name'"
-                style="width:100%;height:38px">
+                style="width:100%;height:38px" required>
             </div>
             <div>
-                <input id="opr" name="opr" type="number" class="easyui-textbox" data-options="prompt:'ID Operator'" style="width:85%;height:38px">
+                <input id="opr" name="opr" type="number" class="easyui-textbox" data-options="prompt:'ID Operator'" style="width:85%;height:38px" required>
                 <a id="scan_id" href="javascript:scan_id()" class="easyui-linkbutton easyui-tooltip"  
                     title="Scan ID." data-options="position:'right'" style="width:14%;height:38px"></a>
             </div>
@@ -54,6 +51,7 @@
         cordova.plugins.barcodeScanner.scan(
             function (result) {
                 $('#opr').textbox('setValue', result.text);
+                login();
             },
             function (error) {
                 alert("Scanning failed: " + error);
@@ -66,25 +64,47 @@
         );
     }
     function login(){
-        $.post('http://10.3.7.13/api/mobile/login', $('#loginForm').serialize(), function(e) {
-            var data = JSON.parse(e);
-            if(data.success){
-                var procId      = $('#proses').combobox('getValue');
-                var procName    = $('#proses').combobox('getText');
-                var oprId       = data.opr_id;
-                var oprName     = data.opr_name;
-                
-                window.localStorage.setItem("procId", procId);
-                window.localStorage.setItem("procName", procName);
-                window.localStorage.setItem("oprId", oprId);
-                window.localStorage.setItem("oprName", oprName);
-                
-                window.open("index.html");
+        $('#loginForm').form('submit',{
+            onSubmit: function(){
+                var valid = $(this).form('validate');
+                if(valid){
+                    //$('#fm-buttons-master_warga-save').linkbutton('disable');
+                    $.messager.progress({
+                        title : 'Please Wait',
+                        msg   : 'Authenticating...'
+                    });
+                    //return true;
+                    
+                    $.post('http://10.3.7.13/api/mobile/login', $('#loginForm').serialize(), function(e) {
+                        var data = JSON.parse(e);
+                        if(data.success){
+                            $.messager.progress('close');
+                            var procId      = $('#proses').combobox('getValue');
+                            var procName    = $('#proses').combobox('getText');
+                            var oprId       = data.opr_id;
+                            var oprName     = data.opr_name;
+
+                            window.localStorage.setItem("procId", procId);
+                            window.localStorage.setItem("procName", procName);
+                            window.localStorage.setItem("oprId", oprId);
+                            window.localStorage.setItem("oprName", oprName);
+                            window.location.replace("index.html");
+                            //window.open("index.html");
+                        }
+                        else{
+                            $.messager.progress('close');
+                            $.messager.alert('Alert',data.reason,'error',function(){
+                                $('#opr').textbox('setValue','');
+                                $('#opr').next().find('input').focus();
+                            });
+                        }
+                        
+                    });
+                }
+                else{
+                    return false;
+                }
             }
-            else{
-                alert(data.reason);
-            }
-            
         });
     }
 </script>
